@@ -163,6 +163,10 @@ public abstract class System {
     return environment;
   }
 
+  public static java.io.Console console() {
+    return null;
+  }
+
   /** Returns the native process environment. */
   private static native String[] getEnvironment();
 }
