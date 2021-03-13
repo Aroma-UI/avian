@@ -12,15 +12,16 @@ package java.io;
 
 public class PushbackReader extends Reader {
   private final Reader in;
-  private char savedChar;
-  private boolean hasSavedChar;
+  private final char[] buffer;
+  private int savedChars;
 
   public PushbackReader(Reader in, int bufferSize) {
-    if (bufferSize > 1) {
-      throw new IllegalArgumentException(bufferSize + " > 1");
+    if (bufferSize <= 0) {
+      throw new IllegalArgumentException("Buffer size could not be zero or negative: " + bufferSize);
     }
+    buffer = new char[bufferSize];
     this.in = in;
-    this.hasSavedChar = false;
+    this.savedChars = 0;
   }
 
   public PushbackReader(Reader in) {
@@ -29,11 +30,12 @@ public class PushbackReader extends Reader {
 
   public int read(char[] b, int offset, int length) throws IOException {
     int count = 0;
-    if (hasSavedChar && length > 0) {
-      length--;
-      b[offset++] = savedChar;
-      hasSavedChar = false;
-      count = 1;
+    if (savedChars > 0 && length > 0) {
+      count = length > savedChars ? savedChars : length;
+      System.arraycopy(buffer, savedChars - count, b, offset, count);
+      savedChars -= count;
+      offset += count;
+      length -= count;
     }
     if (length > 0) {
       int c = in.read(b, offset, length);
@@ -50,13 +52,11 @@ public class PushbackReader extends Reader {
   }
 
   public void unread(char[] b, int offset, int length) throws IOException {
-    if (length != 1) {
-      throw new IOException("Can only push back 1 char, not " + length);
-    } else if (hasSavedChar) {
-      throw new IOException("Already have a saved char");
+    if (length > buffer.length - savedChars) {
+      throw new IOException("Buffer is full");
     } else {
-      hasSavedChar = true;
-      savedChar = b[offset];
+      System.arraycopy(b, offset, buffer, savedChars, length);
+      savedChars += length;
     }
   }
 

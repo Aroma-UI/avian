@@ -10,8 +10,8 @@
 
 package java.util;
 
-public class Hashtable<K, V> implements Map<K, V> {
-  private final HashMap<K, V> map;
+public class Hashtable<K, V> implements Map<K, V>, Cloneable {
+  private HashMap<K, V> map;
 
   public Hashtable(int capacity) {
     map = new HashMap(capacity);
@@ -88,4 +88,10 @@ public class Hashtable<K, V> implements Map<K, V> {
     return new Collections.SynchronizedCollection(this, map.values());
   }
 
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    Hashtable<K,V> clone = (Hashtable<K, V>) super.clone();
+    clone.map = new HashMap<>(this.map);
+    return clone;
+  }
 }
