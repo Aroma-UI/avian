@@ -171,4 +171,35 @@ public final class Long extends Number implements Comparable<Long> {
 
     return number;
   }
+
+  public static Long decode(String nm) throws NumberFormatException {
+    if (nm.isEmpty())
+      throw new NumberFormatException("Size of String is zero");
+    int sign = nm.startsWith("-") ? -1 : 1;
+    if (sign < 0)
+      nm = nm.substring(1);
+    if (nm.startsWith("0x") || nm.startsWith("0X"))
+      return sign*Long.parseLong(nm.substring(2), 16);
+    if (nm.startsWith("0"))
+      return sign*Long.parseLong(nm.substring(1), 8);
+    return sign*Long.parseLong(nm);
+  }
+
+  public static Long getLong(String nm, Long val) {
+    Long res = null;
+    try {
+      res = Long.decode(System.getProperty(nm));
+    } catch (Exception ignored) {
+    }
+    return res == null ? val : res;
+  }
+
+    public static Long getLong(String nm) {
+      return getLong(nm, null);
+    }
+
+    public static Long getLong(String nm, long val) {
+      Long res = getLong(nm, null);
+      return res == null ? val : res;
+    }
 }

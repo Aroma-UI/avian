@@ -13,6 +13,7 @@ package java.util;
 public class Locale {
   private static final Locale DEFAULT;
   public static final Locale ENGLISH = new Locale("en", "");
+  public static final Locale ROOT = new Locale("", "");
 
   private final String language;
   private final String country;
@@ -54,9 +55,9 @@ public class Locale {
   }
 
   public final String toString() {
-    boolean hasLanguage = language != "";
-    boolean hasCountry  = country  != "";
-    boolean hasVariant  = variant  != "";
+    boolean hasLanguage = !language.equals("");
+    boolean hasCountry  = !country.equals("");
+    boolean hasVariant  = !variant.equals("");
 
     if (!hasLanguage && !hasCountry) return "";
     return language + (hasCountry || hasVariant ? '_' + country : "") + (hasVariant ? '_' + variant : "");

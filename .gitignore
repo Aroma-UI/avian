@@ -16,3 +16,4 @@ src/.cproject
 /cmake-build
 /cmake-build
 .idea/*
+*.iml
