@@ -14,12 +14,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class SimpleDateFormat {
+public class SimpleDateFormat extends DateFormat{
   private String pattern;
 
   public SimpleDateFormat(String pattern) {
     this.pattern = pattern;
-    if (! "yyyy-MM-dd'T'HH:mm:ss".equals(pattern)) {
+    if (! "yyyy-MM-dd'T'HH:mm:ss.SSS".equals(pattern)) {
       throw new UnsupportedOperationException("Unsupported pattern: " + pattern);
     }
   }
@@ -44,6 +44,8 @@ public class SimpleDateFormat {
     pad(buffer, calendar.get(Calendar.MINUTE), 2);
     buffer.append(':');
     pad(buffer, calendar.get(Calendar.SECOND), 2);
+    buffer.append('.');
+    pad(buffer, calendar.get(Calendar.MILLISECOND), 3);
     return buffer;
   }
 
@@ -60,12 +62,14 @@ public class SimpleDateFormat {
       index = parseField(text, index, 2, calendar, Calendar.MONTH, -1);
       index = expectPrefix(text, index, "-");
       index = parseField(text, index, 2, calendar, Calendar.DAY_OF_MONTH, 0);
-      index = expectPrefix(text, index, "T");
+      index = expectPrefix(text, index, " ");
       index = parseField(text, index, 2, calendar, Calendar.HOUR_OF_DAY, 0);
       index = expectPrefix(text, index, ":");
       index = parseField(text, index, 2, calendar, Calendar.MINUTE, 0);
       index = expectPrefix(text, index, ":");
       index = parseField(text, index, 2, calendar, Calendar.SECOND, 0);
+      index = expectPrefix(text, index, ".");
+      index = parseField(text, index, 3, calendar, Calendar.MILLISECOND, 0);
       position.setIndex(index);
       return calendar.getTime();
     } catch (ParseException e) {

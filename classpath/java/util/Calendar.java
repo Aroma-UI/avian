@@ -21,6 +21,7 @@ public abstract class Calendar {
   public static final int MONTH = 2;
   public static final int PM = 1;
   public static final int SECOND = 13;
+  public final static int MILLISECOND = 14;
   public static final int YEAR = 1;
 
   public static final int FIELD_COUNT = 17;
@@ -149,12 +150,14 @@ public abstract class Calendar {
       int minute = remainder / MILLIS_PER_MINUTE;
       remainder = remainder % MILLIS_PER_MINUTE;
       int second = remainder / MILLIS_PER_SECOND;
+      int milliseconds = remainder % 1000;
       fields[YEAR] = year;
       fields[MONTH] = month;
       fields[DAY_OF_MONTH] = (int)days;
       fields[HOUR_OF_DAY] = hour;
       fields[MINUTE] = minute;
       fields[SECOND] = second;
+      fields[MILLISECOND] = milliseconds;
     }
     
     public void roll(int field, boolean up) {
