@@ -598,11 +598,11 @@ ifneq (,$(filter arm arm64,$(arch)))
 				ranlib = aarch64-linux-gnu-ranlib
 				strip = aarch64-linux-gnu-strip
 			else
-				cxx = arm-linux-gnueabi-g++
-				cc = arm-linux-gnueabi-gcc
-				ar = arm-linux-gnueabi-ar
-				ranlib = arm-linux-gnueabi-ranlib
-				strip = arm-linux-gnueabi-strip
+				cxx = arm-linux-gnueabihf-g++
+				cc = arm-linux-gnueabihf-gcc
+				ar = arm-linux-gnueabihf-ar
+				ranlib = arm-linux-gnueabihf-ranlib
+				strip = arm-linux-gnueabihf-strip
 			endif
 		endif
 	endif
