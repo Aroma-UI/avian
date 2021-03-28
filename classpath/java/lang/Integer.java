@@ -149,4 +149,26 @@ public final class Integer extends Number implements Comparable<Integer> {
     i |= i >> 16;
     return bitCount(~i);
   }
+
+  public static Integer getInteger(String nm, Integer val) {
+    Integer res = null;
+    try {
+      res = Integer.decode(System.getProperty(nm));
+    } catch (Exception ignored) {
+    }
+    return res == null ? val : res;
+  }
+
+  public static Integer getInteger(String nm) {
+    return getInteger(nm, null);
+  }
+
+  public static Integer getInteger(String nm, int val) {
+    Integer res = getInteger(nm, null);
+    return res == null ? val : res;
+  }
+
+  public static int compare(int x, int y) {
+    return x == y ? 0 : (x > y ? 1 : -1);
+  }
 }

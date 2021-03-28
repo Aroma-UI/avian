@@ -10,7 +10,7 @@
 
 package java.lang;
 
-public final class Float extends Number {
+public final class Float extends Number implements Comparable<Float> {
   public static final Class TYPE = avian.Classes.forCanonicalName("F");
   private static final int EXP_BIT_MASK = 0x7F800000;
   private static final int SIGNIF_BIT_MASK = 0x007FFFFF;
@@ -107,6 +107,19 @@ public final class Float extends Number {
       result = 0x7fc00000;
     }
     return result;
+  }
+
+  public int compareTo(Float anotherFloat) {
+    return Float.compare(value, anotherFloat.value);
+  }
+
+  public static int compare(float f1, float f2) {
+    if (f1 < f2)
+      return -1;
+    else if (f1 > f2)
+      return 1;
+    else
+      return Integer.compare(Float.floatToIntBits(f1), Float.floatToIntBits(f2));
   }
 
   public static native int floatToRawIntBits(float value);

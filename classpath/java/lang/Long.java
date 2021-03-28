@@ -202,4 +202,8 @@ public final class Long extends Number implements Comparable<Long> {
       Long res = getLong(nm, null);
       return res == null ? val : res;
     }
+
+    public static int compare(long x, long y) {
+      return x == y ? 0 : (x > y ? 1 : -1);
+    }
 }

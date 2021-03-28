@@ -10,7 +10,7 @@
 
 package java.lang;
 
-public final class Double extends Number {
+public final class Double extends Number implements Comparable<Double> {
   public static final Class TYPE = avian.Classes.forCanonicalName("D");
 
   public static final double NEGATIVE_INFINITY = -1.0 / 0.0;
@@ -102,6 +102,19 @@ public final class Double extends Number {
   public static long doubleToLongBits(double value) {
     if (isNaN(value)) return 0x7ff8000000000000L;
     return doubleToRawLongBits(value);
+  }
+
+  public int compareTo(Double anotherDouble) {
+    return Double.compare(value, anotherDouble.value);
+  }
+
+  public static int compare(double d1, double d2) {
+    if (d1 < d2)
+      return -1;
+    else if (d1 > d2)
+      return 1;
+    else
+      return Long.compare(Double.doubleToLongBits(d1), Double.doubleToLongBits(d2));
   }
 
   public static native int fillBufferWithDouble(double value, byte[] buffer,
